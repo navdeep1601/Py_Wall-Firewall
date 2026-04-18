@@ -1,0 +1,46 @@
+# ──────────────────────────────────────────────────────────────
+#  PyWall Configuration File
+#  Edit this file to customize firewall behaviour.
+# ──────────────────────────────────────────────────────────────
+
+# NFQueue number (must match iptables --queue-num)
+queue_num: 0
+
+# ── Allowed Ports ─────────────────────────────────────────────
+# Only traffic destined for these ports will be permitted.
+# Common: 22=SSH, 53=DNS, 80=HTTP, 443=HTTPS
+allowed_ports:
+  - 22    # SSH
+  - 53    # DNS
+  - 80    # HTTP
+  - 443   # HTTPS
+  - 8080  # HTTP-alt (dev)
+
+# ── Blacklisted IPs ───────────────────────────────────────────
+# Packets from these source IPs are dropped immediately.
+blacklisted_ips:
+  - 192.168.1.99
+  - 10.0.0.254
+  # Add known malicious IPs here
+
+# ── Rate Limiting ─────────────────────────────────────────────
+rate_limit:
+  enabled: true
+  max_packets: 100       # Max packets per IP within the window
+  window_seconds: 10     # Sliding window size in seconds
+
+# ── Deep Packet Inspection ────────────────────────────────────
+dpi:
+  enabled: true
+  # Signature lists are defined in firewall.py DPIEngine class.
+  # Set enabled: false to disable all payload inspection.
+
+# ── TCP State Table ───────────────────────────────────────────
+state_table:
+  timeout_seconds: 120     # Idle connection expiry time
+  cleanup_interval: 30     # How often to scan for expired entries (seconds)
+
+# ── Logging ───────────────────────────────────────────────────
+logging:
+  level: INFO              # DEBUG | INFO | WARNING | ERROR
+  file: pywall.log         # Log file path
